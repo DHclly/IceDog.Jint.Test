@@ -1,13 +1,13 @@
 # IceDog.Jint.Test
 
-the jint lib test demo project
+the [jint](https://github.com/sebastienros/jint "sebastienros/jint: Javascript Interpreter for .NET") lib test demo project
 
 ## IceDog.Jint.Shell
 
 use jint implate a simple shell by video:
 https://docs.microsoft.com/shows/code-conversations/sebastien-ros-on-jint-javascript-interpreter-net
 
-this video tutorial is old , I use Jint 3.1.1 can't run ,so I write a new Version¡£
+this video tutorial is old , I use Jint 3.1.1 can't run ,so I write a new Versionï¿½ï¿½
 
 the run result:
 
@@ -30,7 +30,7 @@ we can import lodash.js as global variable(_).
 
 if we import a js file write by us,the variable,method .etc is not can use in global,
 not like in browser , will auto mount on `window` obj,we need handle mount method,variable
-to `globalThis`¡£
+to `globalThis`ï¿½ï¿½
 
 example:js/old/tool.js
 
@@ -66,7 +66,7 @@ we need run code like this:
 // we can write code to main.js directly
 var main2 = engine.Modules.Import("./esm/main.js");
 
-// the module should run by Get Or  As* Method£¬use like engine.Execute will error
+// the module should run by Get Or  As* Methodï¿½ï¿½use like engine.Execute will error
 // the module main only execute once
 var moduleMain2 = main2.AsObject();
 double returnVal = main2.Get("returnVal").AsNumber();
