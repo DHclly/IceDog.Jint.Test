@@ -71,7 +71,7 @@ var main2 = engine.Modules.Import("./esm/main.js");
 var moduleMain2 = main2.AsObject();
 double returnVal = main2.Get("returnVal").AsNumber();
 ```
-we need to get the module instalnce,we get the module result ,the code in module
+we need to get the module instance,then get the module result ,the code in module
 will execute.
 
 the test run result:
