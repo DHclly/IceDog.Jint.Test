@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Debug Tool";
+}
+<div class="row">
+    <h1>@ViewData["Title"]</h1>
+</div>
+
+<div class="mb-3">
+    <label for="code" class="form-label">代码:</label>
+    <textarea class="form-control" id="code" rows="10"></textarea>
+</div>
+<div class="mb-3">
+    <button type="button" class="btn btn-primary" id="exec">执行代码</button>
+</div>
+<div class="mb-3">
+    <label for="result" class="form-label">执行结果:</label>
+    <textarea class="form-control" id="result" rows="10"></textarea>
+</div>
+<div class="mb-3">
+    <label for="log" class="form-label">执行日志:</label>
+    <textarea class="form-control" id="log" rows="10"></textarea>
+</div>
+@section Scripts{
+    <script>
+        let ocode = $("#code");
+        let oexec = $("#exec");
+        let oresult = $("#result");
+        let olog = $("#log");
+
+        ocode.val(`import { query } from 'db'
+import _ from 'lodash'
+
+/**
+ * Each file needs to export a function named "handler". This function is the entrance to the Tool.
+ * @@param {Object} args.input - input parameters, you can get test input value by input.xxx.
+ * @@param {Object} args.logger - logger instance used to print logs, injected by runtime
+ * @@returns {*} The return data of the function, which should match the declared output parameters.
+ *
+ * Remember to fill in input/output in Metadata, it helps LLM to recognize and use tool.
+ */
+export async function handler({ input, logger }){
+    logger.info("hello");
+    return {
+        message:"hello world",
+        lodashVersion:_.VERSION
+    };
+};
+                `);
+
+        oexec.on("click", async e => {
+            let code = ocode.val();
+            var source = new EventSource(encodeURI(`/home/debugtooleventsource?code=${code}&paramObjJson[name]=tom&paramObjJson[age]=25`));
+
+            source.addEventListener("open", async () => {
+                console.log("sse connected");
+            })
+
+            source.addEventListener("message", async (e) => {
+                var edata = e.data;
+                var edataObj = JSON.parse(edata);
+
+                var type = edataObj.type;
+                var data = edataObj.data;
+
+                if (type == "log") {
+                    olog.val(olog.val() + "\r\n" + data);
+                }
+                if (type == "result") {
+                    oresult.val(data);
+                }
+                if (type == "close") {
+                    source.close();
+                    console.log("sse closed");
+                }
+            });
+        });
+    </script>
+}
